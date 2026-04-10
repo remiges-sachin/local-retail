@@ -77,12 +77,12 @@ provider_location = {
 
 JAVA_COFFEE_ITEMS = [
     {
-        "id": "java-arabica-whole-beans-01",
-        "name": "Java Arabica Whole Beans 250g",
+        "id": "java-burma-arabica-whole-beans-999",
+        "name": "Java Burma Arabica Whole Beans 250g",
         "short_desc": "Biji kopi arabica Java dengan rasa cocoa dan kacang panggang",
         "long_desc": "Medium roast whole beans from Java with a smooth body, mild acidity, and notes of cocoa and toasted nuts. Cocok untuk pour-over, French press, dan espresso.",
         "image": "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1200&q=80",
-        "price": 349,
+        "price": 999,
         "unit_quantity": 250,
         "unit_code": "G",
         "generic_name": "Whole Bean Coffee"

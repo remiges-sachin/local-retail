@@ -68,7 +68,7 @@ modules:
           config:
             routingConfig: ./config/local-simple-routing-BPPReceiver.yaml
       steps:
-        # - validateSign
+        - validateSign
         - addRoute
         - validateSchema
   
