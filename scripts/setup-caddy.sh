@@ -9,6 +9,9 @@ BAP_UPSTREAM="${BAP_UPSTREAM:-127.0.0.1:8081}"
 BPP_UPSTREAM="${BPP_UPSTREAM:-127.0.0.1:8082}"
 BAPAPP_UPSTREAM="${BAPAPP_UPSTREAM:-127.0.0.1:8083}"
 BPPAPP_UPSTREAM="${BPPAPP_UPSTREAM:-127.0.0.1:8080}"
+FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-shop.remiges.tech}"
+FRONTEND_UPSTREAM="${FRONTEND_UPSTREAM:-127.0.0.1:3000}"
+ACCESS_LOG_FILE="${ACCESS_LOG_FILE:-/var/log/caddy/access.log}"
 GO_VERSION="${GO_VERSION:-1.25.0}"
 CADDY_EMAIL="${CADDY_EMAIL:-}"
 
@@ -72,10 +75,35 @@ if [[ -f /etc/caddy/Caddyfile ]]; then
   cp /etc/caddy/Caddyfile "/etc/caddy/Caddyfile.bak.$(date +%Y%m%d%H%M%S)"
 fi
 
+mkdir -p "$(dirname "${ACCESS_LOG_FILE}")"
+touch "${ACCESS_LOG_FILE}"
+chown caddy:caddy "${ACCESS_LOG_FILE}"
+
 EMAIL_BLOCK=""
 if [[ -n "${CADDY_EMAIL}" ]]; then
   EMAIL_BLOCK="email ${CADDY_EMAIL}"
 fi
+
+ACCESS_LOG_BLOCK="
+	log {
+		output file ${ACCESS_LOG_FILE}
+		format console
+	}"
+
+FRONTEND_BLOCK="
+
+${FRONTEND_DOMAIN} {
+	encode zstd gzip${ACCESS_LOG_BLOCK}
+
+	@api path /api/* /health
+	handle @api {
+		reverse_proxy ${BAPAPP_UPSTREAM}
+	}
+
+	handle {
+		reverse_proxy ${FRONTEND_UPSTREAM}
+	}
+}"
 
 cat > /etc/caddy/Caddyfile <<EOF
 {
@@ -83,24 +111,24 @@ cat > /etc/caddy/Caddyfile <<EOF
 }
 
 ${BAP_DOMAIN} {
-	encode zstd gzip
+	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BAP_UPSTREAM}
 }
 
 ${BPP_DOMAIN} {
-	encode zstd gzip
+	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BPP_UPSTREAM}
 }
 
 ${BAPAPP_DOMAIN} {
-	encode zstd gzip
+	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BAPAPP_UPSTREAM}
 }
 
 ${BPPAPP_DOMAIN} {
-	encode zstd gzip
+	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BPPAPP_UPSTREAM}
-}
+}${FRONTEND_BLOCK}
 EOF
 
 caddy fmt --overwrite /etc/caddy/Caddyfile
@@ -114,6 +142,9 @@ echo "BAP domain: ${BAP_DOMAIN} -> ${BAP_UPSTREAM}"
 echo "BPP domain: ${BPP_DOMAIN} -> ${BPP_UPSTREAM}"
 echo "BAP app domain: ${BAPAPP_DOMAIN} -> ${BAPAPP_UPSTREAM}"
 echo "BPP app domain: ${BPPAPP_DOMAIN} -> ${BPPAPP_UPSTREAM}"
+echo "Frontend domain: ${FRONTEND_DOMAIN} -> ${FRONTEND_UPSTREAM}"
+echo "Frontend /api/* and /health -> ${BAPAPP_UPSTREAM}"
+echo "Access log file: ${ACCESS_LOG_FILE}"
 echo
 echo "Checks:"
 echo "  go version"
@@ -121,4 +152,7 @@ echo "  curl -I https://${BAP_DOMAIN}"
 echo "  curl -I https://${BPP_DOMAIN}"
 echo "  curl -I https://${BAPAPP_DOMAIN}"
 echo "  curl -I https://${BPPAPP_DOMAIN}"
+echo "  curl -I https://${FRONTEND_DOMAIN}"
+echo "  curl -I https://${FRONTEND_DOMAIN}/health"
+echo "  tail -f ${ACCESS_LOG_FILE}"
 echo "  journalctl -u caddy -f"
