@@ -11,6 +11,8 @@ BAPAPP_UPSTREAM="${BAPAPP_UPSTREAM:-127.0.0.1:8083}"
 BPPAPP_UPSTREAM="${BPPAPP_UPSTREAM:-127.0.0.1:8080}"
 FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-shop.remiges.tech}"
 FRONTEND_UPSTREAM="${FRONTEND_UPSTREAM:-127.0.0.1:3000}"
+BPP_FRONTEND_DOMAIN="${BPP_FRONTEND_DOMAIN:-storeadmin.remiges.tech}"
+BPP_FRONTEND_UPSTREAM="${BPP_FRONTEND_UPSTREAM:-127.0.0.1:3001}"
 ACCESS_LOG_FILE="${ACCESS_LOG_FILE:-/var/log/caddy/access.log}"
 GO_VERSION="${GO_VERSION:-1.25.0}"
 CADDY_EMAIL="${CADDY_EMAIL:-}"
@@ -105,6 +107,21 @@ ${FRONTEND_DOMAIN} {
 	}
 }"
 
+BPP_FRONTEND_BLOCK="
+
+${BPP_FRONTEND_DOMAIN} {
+	encode zstd gzip${ACCESS_LOG_BLOCK}
+
+	@api path /api/* /health
+	handle @api {
+		reverse_proxy ${BPPAPP_UPSTREAM}
+	}
+
+	handle {
+		reverse_proxy ${BPP_FRONTEND_UPSTREAM}
+	}
+}"
+
 cat > /etc/caddy/Caddyfile <<EOF
 {
 	${EMAIL_BLOCK}
@@ -128,7 +145,7 @@ ${BAPAPP_DOMAIN} {
 ${BPPAPP_DOMAIN} {
 	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BPPAPP_UPSTREAM}
-}${FRONTEND_BLOCK}
+}${FRONTEND_BLOCK}${BPP_FRONTEND_BLOCK}
 EOF
 
 caddy fmt --overwrite /etc/caddy/Caddyfile
@@ -144,6 +161,8 @@ echo "BAP app domain: ${BAPAPP_DOMAIN} -> ${BAPAPP_UPSTREAM}"
 echo "BPP app domain: ${BPPAPP_DOMAIN} -> ${BPPAPP_UPSTREAM}"
 echo "Frontend domain: ${FRONTEND_DOMAIN} -> ${FRONTEND_UPSTREAM}"
 echo "Frontend /api/* and /health -> ${BAPAPP_UPSTREAM}"
+echo "BPP frontend domain: ${BPP_FRONTEND_DOMAIN} -> ${BPP_FRONTEND_UPSTREAM}"
+echo "BPP frontend /api/* and /health -> ${BPPAPP_UPSTREAM}"
 echo "Access log file: ${ACCESS_LOG_FILE}"
 echo
 echo "Checks:"
@@ -154,5 +173,7 @@ echo "  curl -I https://${BAPAPP_DOMAIN}"
 echo "  curl -I https://${BPPAPP_DOMAIN}"
 echo "  curl -I https://${FRONTEND_DOMAIN}"
 echo "  curl -I https://${FRONTEND_DOMAIN}/health"
+echo "  curl -I https://${BPP_FRONTEND_DOMAIN}"
+echo "  curl -I https://${BPP_FRONTEND_DOMAIN}/health"
 echo "  tail -f ${ACCESS_LOG_FILE}"
 echo "  journalctl -u caddy -f"
