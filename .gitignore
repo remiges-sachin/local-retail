@@ -1,0 +1,4 @@
+# Local secret files
+/testnet/retail-devkit/config/onix-secrets.env
+/testnet/retail-devkit/config/onix-vault.env
+/testnet/retail-devkit/config/*.local.env

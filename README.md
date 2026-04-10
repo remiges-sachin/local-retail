@@ -21,6 +21,8 @@ It serves as:
 |--------|------------|
 | `schema/` | Retail v2 attribute schemas (RetailCore + vertical schemas) |
 | `docs/` | Implementation guides, architectural notes, and design decisions |
+| `script/` | Helper scripts for local testnet checks and catalog publish testing |
+| `scripts/` | Server setup helpers, including Caddy configuration for public BAP and BPP endpoints |
 
 ---
 

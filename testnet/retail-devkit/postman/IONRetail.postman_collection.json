@@ -251,19 +251,19 @@
     },
     {
       "key": "bapId",
-      "value": "sandbox.food-finder.com"
+      "value": "baptest.remiges.tech"
     },
     {
       "key": "bapUri",
-      "value": "http://onix-bap:8081/bap/receiver"
+      "value": "https://baptest.remiges.tech/bap/receiver"
     },
     {
       "key": "bppId",
-      "value": "sandbox.open-kitchen.com"
+      "value": "bpptest.remiges.tech"
     },
     {
       "key": "bppUri",
-      "value": "http://onix-bpp:8082/bpp/receiver"
+      "value": "https://bpptest.remiges.tech/bpp/receiver"
     },
     {
       "key": "transaction_id",
@@ -275,11 +275,11 @@
     },
     {
       "key": "bap_adapter_url",
-      "value": "http://localhost:8081/bap/caller"
+      "value": "https://baptest.remiges.tech/bap/caller"
     },
     {
       "key": "bpp_adapter_url",
-      "value": "http://localhost:8082/bpp/caller"
+      "value": "https://bpptest.remiges.tech/bpp/caller"
     }
   ]
 }

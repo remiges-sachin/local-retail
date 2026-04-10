@@ -57,18 +57,28 @@ Follow these steps to get the devkit running locally:
 
 ```bash
 git clone https://github.com/beckn/local-retail.git
-cd local-retail/testnet/retail-devkit/install
+cd local-retail/testnet/retail-devkit
 ```
 
-**2. Start the adapter stack**
+**2. Create the local secrets file**
 
 ```bash
+cp config/onix-secrets.env.example config/onix-secrets.env
+```
+
+Fill in the private key values in `config/onix-secrets.env`.
+Do not commit that file.
+
+**3. Start the adapter stack**
+
+```bash
+cd install
 docker compose -f docker-compose-adapter.yml up --build
 ```
 
 This command builds and starts all required services. The first run may take a few minutes to pull and build Docker images.
 
-**3. Verify the stack is running**
+**4. Verify the stack is running**
 
 Once the containers are up, verify the services are healthy:
 
@@ -128,6 +138,8 @@ Check for port conflicts. Inspect logs with:
 ```bash
 docker compose -f docker-compose-adapter.yml logs
 ```
+
+Also confirm `config/onix-secrets.env` exists and contains valid values for the BAP and BPP key variables.
 
 **Postman requests return connection errors**
 

@@ -2,7 +2,7 @@ routingRules:
   - version: "2.0.0"
     targetType: "url"
     target:
-      url: "http://sandbox-bpp:3002/api/webhook"
+      url: "https://bppapp.remiges.tech/api/webhook"
     endpoints:
       - select
       - init

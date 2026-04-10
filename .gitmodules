@@ -1,0 +1,3 @@
+[submodule "bpp-application"]
+	path = bpp-application
+	url = https://github.com/remiges-tech/beckn-app

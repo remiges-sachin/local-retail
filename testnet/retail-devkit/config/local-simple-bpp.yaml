@@ -40,12 +40,12 @@ modules:
         keyManager:
           id: simplekeymanager
           config:
-            networkParticipant: sandbox.open-kitchen.com
-            keyId: 76EU8h2x8sGsY9c659SFNT7pJEJntehLHfr3p4oXVy3mCDMn5GFiMg
-            signingPrivateKey: 4YRjrBFInRb8OLN1PiwUM9qutrJy2bvzcWPNy47VAD4=
-            signingPublicKey: AAUhITzcjMbmPikr/UV5T8/Zp8+NWZ/NrVVateA5eiQ=
-            encrPrivateKey: 4YRjrBFInRb8OLN1PiwUM9qutrJy2bvzcWPNy47VAD4=
-            encrPublicKey: AAUhITzcjMbmPikr/UV5T8/Zp8+NWZ/NrVVateA5eiQ=
+            networkParticipant: bpptest1.remiges.tech
+            keyId: 76EU8vHpdM241YVVTWhb2yrQTgQufMK2tHtPyWy1QjrraesZC7drEU
+            signingPrivateKey: oL70fT56YiBeoPtO2KfF+gvPmqu+88WMEAsItkXrsQI=
+            signingPublicKey: tUAauSpLQ5r05/TNqtwLstzVxFbqhOtZ4GvBFmO9u8Y=
+            encrPrivateKey: 6v0A1lLQ2j8i9SHk5ZWErLZEErM7zJi/iOdFatWGMgg=
+            encrPublicKey: N0HCsmx2aP29zgfosOHSc28yncbCH6Hx5jWhw0nqWSc=
         schemaValidator:
           id: schemav2validator
           config:
@@ -95,12 +95,12 @@ modules:
         keyManager:
           id: simplekeymanager
           config:
-            networkParticipant: sandbox.open-kitchen.com
-            keyId: 76EU8h2x8sGsY9c659SFNT7pJEJntehLHfr3p4oXVy3mCDMn5GFiMg
-            signingPrivateKey: 4YRjrBFInRb8OLN1PiwUM9qutrJy2bvzcWPNy47VAD4=
-            signingPublicKey: AAUhITzcjMbmPikr/UV5T8/Zp8+NWZ/NrVVateA5eiQ=
-            encrPrivateKey: 4YRjrBFInRb8OLN1PiwUM9qutrJy2bvzcWPNy47VAD4=
-            encrPublicKey: AAUhITzcjMbmPikr/UV5T8/Zp8+NWZ/NrVVateA5eiQ=
+            networkParticipant: bpptest1.remiges.tech
+            keyId: 76EU8vHpdM241YVVTWhb2yrQTgQufMK2tHtPyWy1QjrraesZC7drEU
+            signingPrivateKey: oL70fT56YiBeoPtO2KfF+gvPmqu+88WMEAsItkXrsQI=
+            signingPublicKey: tUAauSpLQ5r05/TNqtwLstzVxFbqhOtZ4GvBFmO9u8Y=
+            encrPrivateKey: 6v0A1lLQ2j8i9SHk5ZWErLZEErM7zJi/iOdFatWGMgg=
+            encrPublicKey: N0HCsmx2aP29zgfosOHSc28yncbCH6Hx5jWhw0nqWSc=
         schemaValidator:
           id: schemav2validator
           config:
