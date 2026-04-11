@@ -51,6 +51,7 @@ cat <<EOF
         "resources": [
           {
             "id": "item-flask-mh500-yellow",
+            "stockQuantity": 10,
             "descriptor": {
               "name": "Isothermal Iron Flask MH500 Khaki",
               "shortDesc": "Triple-walled vacuum insulated stainless steel flask, 5000 ml",

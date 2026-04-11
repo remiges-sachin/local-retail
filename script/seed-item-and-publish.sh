@@ -20,7 +20,7 @@ RESOURCE_NAME="${RESOURCE_NAME:-}"
 OFFER_ID="${OFFER_ID:-}"
 PRICE="${PRICE:-1200}"
 CURRENCY="${CURRENCY:-INR}"
-SEED_ITEM_COUNT="${SEED_ITEM_COUNT:-10}"
+SEED_ITEM_COUNT="${SEED_ITEM_COUNT:-1}"
 SEED_PREFIX="${SEED_PREFIX:-seed-$(date -u +%Y%m%d%H%M%S)-$RANDOM}"
 
 TMP_DIR="$(mktemp -d)"
@@ -200,6 +200,7 @@ def build_entry(resource_id: str, resource_name: str, offer_id: str, price: floa
 
     resource = {
         "id": normalized_resource_id,
+        "stockQuantity": 10,
         "descriptor": {
             "name": resource_name,
             "shortDesc": short_desc,
