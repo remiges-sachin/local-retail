@@ -1,0 +1,47 @@
+receivers:
+  fluentforward:
+    endpoint: 0.0.0.0:24224
+
+processors:
+  batch:
+    send_batch_size: 1024
+    timeout: 10s
+
+  resource/service:
+    attributes:
+      - key: service.name
+        value: onix-bpp
+        action: upsert
+
+  transform/logs:
+    error_mode: ignore
+    log_statements:
+      - merge_maps(log.attributes, ParseJSON(log.body), "upsert") where IsString(log.body) and log.body != nil and IsMatch(log.body, "^\\s*\\{")
+      - merge_maps(log.attributes, ParseJSON(log.attributes["body"]), "upsert") where IsString(log.attributes["body"]) and IsMatch(log.attributes["body"], "^\\s*\\{")
+      - set(log.attributes["action"], log.attributes["context"]["action"]) where log.attributes["context"] != nil and log.attributes["context"]["action"] != nil
+      - set(log.attributes["transaction_id"], log.attributes["context"]["transactionId"]) where log.attributes["context"] != nil and log.attributes["context"]["transactionId"] != nil
+      - set(log.attributes["message_id"], log.attributes["context"]["messageId"]) where log.attributes["context"] != nil and log.attributes["context"]["messageId"] != nil
+      - set(log.attributes["subscriber_id"], log.attributes["context"]["bppId"]) where log.attributes["subscriber_id"] == nil and log.attributes["context"] != nil and log.attributes["context"]["bppId"] != nil
+      - set(log.attributes["level"], log.attributes["detected_level"]) where log.attributes["level"] == nil and log.attributes["detected_level"] != nil
+      - set(resource.attributes["loki.resource.labels"], "service.name")
+
+exporters:
+  otlp_http/loki:
+    endpoint: http://loki:3100/otlp
+    compression: gzip
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+service:
+  extensions: [health_check]
+  pipelines:
+    logs:
+      receivers: [fluentforward]
+      processors: [resource/service, transform/logs, batch]
+      exporters: [otlp_http/loki]
+
+  telemetry:
+    logs:
+      level: info

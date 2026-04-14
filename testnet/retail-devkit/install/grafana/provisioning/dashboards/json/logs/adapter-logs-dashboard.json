@@ -1,0 +1,438 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_LOKI",
+      "label": "Loki",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "loki",
+      "pluginName": "Loki"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.4.0"
+    },
+    {
+      "type": "panel",
+      "id": "logs",
+      "name": "Logs",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "loki",
+      "name": "Loki",
+      "version": "12.4.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Adapter logs for the local-retail demo deployment.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Adapter Logs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "${Datasource}"
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
+        "enableLogDetails": true,
+        "prettifyLogMessage": true,
+        "showCommonLabels": false,
+        "showControls": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "syntaxHighlighting": true,
+        "wrapLogMessage": true
+      },
+      "pluginVersion": "12.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "${Datasource}"
+          },
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{service_name=~\"${service}\"} |~ \"${level}\" |~ \"${module_id}\" |~ \"${subscriber_id}\" |~ \"${action}\" |~ \"${transaction_id}\" |~ \"${message_id}\" |= \"${search}\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Adapter logs",
+      "type": "logs"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "local-retail",
+    "loki",
+    "logs",
+    "onix"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": "${DS_LOKI}"
+        },
+        "hide": 2,
+        "label": "datasource",
+        "name": "Datasource",
+        "options": [],
+        "query": "loki",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Service",
+        "name": "service",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "BAP adapter",
+            "value": "beckn-one-bap|onix-bap"
+          },
+          {
+            "selected": false,
+            "text": "BPP adapter",
+            "value": "beckn-one-bpp|onix-bpp"
+          }
+        ],
+        "query": "beckn-one-bap|onix-bap,beckn-one-bpp|onix-bpp",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Subscriber ID",
+        "name": "subscriber_id",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "baptest1.remiges.tech",
+            "value": "baptest1\\.remiges\\.tech"
+          },
+          {
+            "selected": false,
+            "text": "bpptest1.remiges.tech",
+            "value": "bpptest1\\.remiges\\.tech"
+          }
+        ],
+        "query": "baptest1\\.remiges\\.tech,bpptest1\\.remiges\\.tech",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Action",
+        "name": "action",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "search",
+            "value": "\\\"action\\\":\\\"search\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_search",
+            "value": "\\\"action\\\":\\\"on_search\\\""
+          },
+          {
+            "selected": false,
+            "text": "select",
+            "value": "\\\"action\\\":\\\"select\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_select",
+            "value": "\\\"action\\\":\\\"on_select\\\""
+          },
+          {
+            "selected": false,
+            "text": "init",
+            "value": "\\\"action\\\":\\\"init\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_init",
+            "value": "\\\"action\\\":\\\"on_init\\\""
+          },
+          {
+            "selected": false,
+            "text": "confirm",
+            "value": "\\\"action\\\":\\\"confirm\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_confirm",
+            "value": "\\\"action\\\":\\\"on_confirm\\\""
+          },
+          {
+            "selected": false,
+            "text": "status",
+            "value": "\\\"action\\\":\\\"status\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_status",
+            "value": "\\\"action\\\":\\\"on_status\\\""
+          },
+          {
+            "selected": false,
+            "text": "cancel",
+            "value": "\\\"action\\\":\\\"cancel\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_cancel",
+            "value": "\\\"action\\\":\\\"on_cancel\\\""
+          },
+          {
+            "selected": false,
+            "text": "support",
+            "value": "\\\"action\\\":\\\"support\\\""
+          },
+          {
+            "selected": false,
+            "text": "on_support",
+            "value": "\\\"action\\\":\\\"on_support\\\""
+          }
+        ],
+        "query": "\\\"action\\\":\\\"search\\\",\\\"action\\\":\\\"on_search\\\",\\\"action\\\":\\\"select\\\",\\\"action\\\":\\\"on_select\\\",\\\"action\\\":\\\"init\\\",\\\"action\\\":\\\"on_init\\\",\\\"action\\\":\\\"confirm\\\",\\\"action\\\":\\\"on_confirm\\\",\\\"action\\\":\\\"status\\\",\\\"action\\\":\\\"on_status\\\",\\\"action\\\":\\\"cancel\\\",\\\"action\\\":\\\"on_cancel\\\",\\\"action\\\":\\\"support\\\",\\\"action\\\":\\\"on_support\\\"",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Module ID",
+        "name": "module_id",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "bapTxnCaller",
+            "value": "\\\"module_id\\\":\\\"bapTxnCaller\\\""
+          },
+          {
+            "selected": false,
+            "text": "bapTxnReceiver",
+            "value": "\\\"module_id\\\":\\\"bapTxnReceiver\\\""
+          },
+          {
+            "selected": false,
+            "text": "bppTxnCaller",
+            "value": "\\\"module_id\\\":\\\"bppTxnCaller\\\""
+          },
+          {
+            "selected": false,
+            "text": "bppTxnReceiver",
+            "value": "\\\"module_id\\\":\\\"bppTxnReceiver\\\""
+          }
+        ],
+        "query": "\\\"module_id\\\":\\\"bapTxnCaller\\\",\\\"module_id\\\":\\\"bapTxnReceiver\\\",\\\"module_id\\\":\\\"bppTxnCaller\\\",\\\"module_id\\\":\\\"bppTxnReceiver\\\"",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "includeAll": true,
+        "label": "Level",
+        "name": "level",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "debug",
+            "value": "\\\"level\\\":\\\"debug\\\""
+          },
+          {
+            "selected": false,
+            "text": "info",
+            "value": "\\\"level\\\":\\\"info\\\""
+          },
+          {
+            "selected": false,
+            "text": "warn",
+            "value": "\\\"level\\\":\\\"warn\\\""
+          },
+          {
+            "selected": false,
+            "text": "error",
+            "value": "\\\"level\\\":\\\"error\\\""
+          }
+        ],
+        "query": "\\\"level\\\":\\\"debug\\\",\\\"level\\\":\\\"info\\\",\\\"level\\\":\\\"warn\\\",\\\"level\\\":\\\"error\\\"",
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "label": "Transaction ID",
+        "name": "transaction_id",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": ".*",
+          "value": ".*"
+        },
+        "label": "Message ID",
+        "name": "message_id",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "",
+          "value": ""
+        },
+        "label": "Search",
+        "name": "search",
+        "options": [
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Adapter Logs Dashboard",
+  "uid": "local-retail-adapter-logs",
+  "version": 3,
+  "weekStart": ""
+}

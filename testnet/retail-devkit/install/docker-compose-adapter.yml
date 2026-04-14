@@ -31,6 +31,13 @@ services:
       RABBITMQ_ADDR: rabbitmq:5672
       RABBITMQ_USER: admin
       RABBITMQ_PASS: admin123
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24224"
+        fluentd-async: "true"
+        mode: non-blocking
+        tag: "beckn.bap.stdout"
     volumes:
       - ../config:/app/config
       - ../schemas:/app/schemas
@@ -50,6 +57,13 @@ services:
       RABBITMQ_ADDR: rabbitmq:5672
       RABBITMQ_USER: admin
       RABBITMQ_PASS: admin123
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: "localhost:24225"
+        fluentd-async: "true"
+        mode: non-blocking
+        tag: "beckn.bpp.stdout"
     volumes:
       - ../config:/app/config
       - ../schemas:/app/schemas
