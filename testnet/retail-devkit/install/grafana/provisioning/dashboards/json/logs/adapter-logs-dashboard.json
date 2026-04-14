@@ -211,75 +211,75 @@
           {
             "selected": false,
             "text": "search",
-            "value": "\"action\":\"search\""
+            "value": "/search"
           },
           {
             "selected": false,
             "text": "on_search",
-            "value": "\"action\":\"on_search\""
+            "value": "/on_search"
           },
           {
             "selected": false,
             "text": "select",
-            "value": "\"action\":\"select\""
+            "value": "/select"
           },
           {
             "selected": false,
             "text": "on_select",
-            "value": "\"action\":\"on_select\""
+            "value": "/on_select"
           },
           {
             "selected": false,
             "text": "init",
-            "value": "\"action\":\"init\""
+            "value": "/init"
           },
           {
             "selected": false,
             "text": "on_init",
-            "value": "\"action\":\"on_init\""
+            "value": "/on_init"
           },
           {
             "selected": false,
             "text": "confirm",
-            "value": "\"action\":\"confirm\""
+            "value": "/confirm"
           },
           {
             "selected": false,
             "text": "on_confirm",
-            "value": "\"action\":\"on_confirm\""
+            "value": "/on_confirm"
           },
           {
             "selected": false,
             "text": "status",
-            "value": "\"action\":\"status\""
+            "value": "/status"
           },
           {
             "selected": false,
             "text": "on_status",
-            "value": "\"action\":\"on_status\""
+            "value": "/on_status"
           },
           {
             "selected": false,
             "text": "cancel",
-            "value": "\"action\":\"cancel\""
+            "value": "/cancel"
           },
           {
             "selected": false,
             "text": "on_cancel",
-            "value": "\"action\":\"on_cancel\""
+            "value": "/on_cancel"
           },
           {
             "selected": false,
             "text": "support",
-            "value": "\"action\":\"support\""
+            "value": "/support"
           },
           {
             "selected": false,
             "text": "on_support",
-            "value": "\"action\":\"on_support\""
+            "value": "/on_support"
           }
         ],
-        "query": "\"action\":\"search\",\"action\":\"on_search\",\"action\":\"select\",\"action\":\"on_select\",\"action\":\"init\",\"action\":\"on_init\",\"action\":\"confirm\",\"action\":\"on_confirm\",\"action\":\"status\",\"action\":\"on_status\",\"action\":\"cancel\",\"action\":\"on_cancel\",\"action\":\"support\",\"action\":\"on_support\"",
+        "query": "/search,/on_search,/select,/on_select,/init,/on_init,/confirm,/on_confirm,/status,/on_status,/cancel,/on_cancel,/support,/on_support",
         "type": "custom",
         "valuesFormat": "csv"
       },
