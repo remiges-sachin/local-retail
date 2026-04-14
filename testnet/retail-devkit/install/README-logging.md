@@ -27,23 +27,33 @@ Each collector parses:
 1. the outer adapter stdout JSON line
 2. the nested JSON string inside `body`
 
-The collectors promote one stable Loki label:
+The collectors promote a stable Loki label for:
 - `service_name`
 
 Service names now match the demo deployment containers:
 - `onix-bap`
 - `onix-bpp`
 
-The collectors still parse the outer log JSON and nested `body` JSON, but the dashboard now filters transaction, action, module, level, and subscriber by matching the raw log line text.
+The dashboard uses an exact label-backed dropdown for service.
+
+It uses exact-value filters against the raw log line for:
+- subscriber_id
+- action
+- module_id
+- level
+- transaction_id
+- message_id
 
 Reason:
+- transaction and message filtering remain line-exact
+- service stays index-backed
 - this avoids pulling in adjacent debug lines that do not explicitly contain the transaction ID
-- transaction filtering is now line-exact instead of resource-label based
 
 ## Ports
 
 This logging stack uses:
 - Grafana: `http://localhost:3300`
+- Public Grafana through Caddy: `https://ion-noc.test.remiges.tech`
 - Loki: `http://localhost:3100`
 - BAP collector fluentd input: `localhost:24224`
 - BPP collector fluentd input: `localhost:24225`
@@ -81,9 +91,11 @@ You can override them when starting the logging stack:
 ```bash
 GRAFANA_ADMIN_USER=admin \
 GRAFANA_ADMIN_PASSWORD=change-me \
-GRAFANA_ROOT_URL=http://localhost:3300 \
+GRAFANA_ROOT_URL=https://ion-noc.test.remiges.tech \
 docker compose -f docker-compose-logging.yml up -d
 ```
+
+For public access behind Caddy, set `GRAFANA_ROOT_URL` to the public HTTPS domain.
 
 ## Failure behavior
 
@@ -115,6 +127,7 @@ Main filters:
 
 Behavior notes:
 - `Service = All` now works by default
+- subscriber, action, module, and level use exact values in the dashboard
 - `Transaction ID` now matches only lines whose raw log text actually contains that ID
 - the panel title says `Adapter logs` because the logs originate on container stdout and are shipped to Loki through Docker fluentd logging
 

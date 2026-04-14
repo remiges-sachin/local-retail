@@ -99,7 +99,7 @@
           },
           "direction": "backward",
           "editorMode": "code",
-          "expr": "{service_name=~\"${service}\"} |~ \"${level}\" |~ \"${module_id}\" |~ \"${subscriber_id}\" |~ \"${action}\" |~ \"${transaction_id}\" |~ \"${message_id}\" |= \"${search}\"",
+          "expr": "{service_name=~\"${service:regex}\"} |~ \"${subscriber_id}\" |~ \"${action}\" |~ \"${module_id}\" |~ \"${level}\" |~ \"${transaction_id}\" |~ \"${message_id}\" |= \"${search}\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -141,29 +141,25 @@
           "text": "All",
           "value": "$__all"
         },
+        "datasource": {
+          "type": "loki",
+          "uid": "${Datasource}"
+        },
         "includeAll": true,
         "label": "Service",
+        "multi": true,
         "name": "service",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "BAP adapter",
-            "value": "beckn-one-bap|onix-bap"
-          },
-          {
-            "selected": false,
-            "text": "BPP adapter",
-            "value": "beckn-one-bpp|onix-bpp"
-          }
-        ],
-        "query": "beckn-one-bap|onix-bap,beckn-one-bpp|onix-bpp",
-        "type": "custom",
-        "valuesFormat": "csv"
+        "options": [],
+        "query": {
+          "label": "service_name",
+          "refId": "ServiceVariable",
+          "stream": "{service_name=~\"onix-.+\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "^onix-.*$",
+        "sort": 1,
+        "type": "query"
       },
       {
         "allValue": ".*",
@@ -184,15 +180,15 @@
           {
             "selected": false,
             "text": "baptest1.remiges.tech",
-            "value": "baptest1\\.remiges\\.tech"
+            "value": "baptest1.remiges.tech"
           },
           {
             "selected": false,
             "text": "bpptest1.remiges.tech",
-            "value": "bpptest1\\.remiges\\.tech"
+            "value": "bpptest1.remiges.tech"
           }
         ],
-        "query": "baptest1\\.remiges\\.tech,bpptest1\\.remiges\\.tech",
+        "query": "baptest1.remiges.tech,bpptest1.remiges.tech",
         "type": "custom",
         "valuesFormat": "csv"
       },
@@ -215,75 +211,75 @@
           {
             "selected": false,
             "text": "search",
-            "value": "\\\"action\\\":\\\"search\\\""
+            "value": "\"action\":\"search\""
           },
           {
             "selected": false,
             "text": "on_search",
-            "value": "\\\"action\\\":\\\"on_search\\\""
+            "value": "\"action\":\"on_search\""
           },
           {
             "selected": false,
             "text": "select",
-            "value": "\\\"action\\\":\\\"select\\\""
+            "value": "\"action\":\"select\""
           },
           {
             "selected": false,
             "text": "on_select",
-            "value": "\\\"action\\\":\\\"on_select\\\""
+            "value": "\"action\":\"on_select\""
           },
           {
             "selected": false,
             "text": "init",
-            "value": "\\\"action\\\":\\\"init\\\""
+            "value": "\"action\":\"init\""
           },
           {
             "selected": false,
             "text": "on_init",
-            "value": "\\\"action\\\":\\\"on_init\\\""
+            "value": "\"action\":\"on_init\""
           },
           {
             "selected": false,
             "text": "confirm",
-            "value": "\\\"action\\\":\\\"confirm\\\""
+            "value": "\"action\":\"confirm\""
           },
           {
             "selected": false,
             "text": "on_confirm",
-            "value": "\\\"action\\\":\\\"on_confirm\\\""
+            "value": "\"action\":\"on_confirm\""
           },
           {
             "selected": false,
             "text": "status",
-            "value": "\\\"action\\\":\\\"status\\\""
+            "value": "\"action\":\"status\""
           },
           {
             "selected": false,
             "text": "on_status",
-            "value": "\\\"action\\\":\\\"on_status\\\""
+            "value": "\"action\":\"on_status\""
           },
           {
             "selected": false,
             "text": "cancel",
-            "value": "\\\"action\\\":\\\"cancel\\\""
+            "value": "\"action\":\"cancel\""
           },
           {
             "selected": false,
             "text": "on_cancel",
-            "value": "\\\"action\\\":\\\"on_cancel\\\""
+            "value": "\"action\":\"on_cancel\""
           },
           {
             "selected": false,
             "text": "support",
-            "value": "\\\"action\\\":\\\"support\\\""
+            "value": "\"action\":\"support\""
           },
           {
             "selected": false,
             "text": "on_support",
-            "value": "\\\"action\\\":\\\"on_support\\\""
+            "value": "\"action\":\"on_support\""
           }
         ],
-        "query": "\\\"action\\\":\\\"search\\\",\\\"action\\\":\\\"on_search\\\",\\\"action\\\":\\\"select\\\",\\\"action\\\":\\\"on_select\\\",\\\"action\\\":\\\"init\\\",\\\"action\\\":\\\"on_init\\\",\\\"action\\\":\\\"confirm\\\",\\\"action\\\":\\\"on_confirm\\\",\\\"action\\\":\\\"status\\\",\\\"action\\\":\\\"on_status\\\",\\\"action\\\":\\\"cancel\\\",\\\"action\\\":\\\"on_cancel\\\",\\\"action\\\":\\\"support\\\",\\\"action\\\":\\\"on_support\\\"",
+        "query": "\"action\":\"search\",\"action\":\"on_search\",\"action\":\"select\",\"action\":\"on_select\",\"action\":\"init\",\"action\":\"on_init\",\"action\":\"confirm\",\"action\":\"on_confirm\",\"action\":\"status\",\"action\":\"on_status\",\"action\":\"cancel\",\"action\":\"on_cancel\",\"action\":\"support\",\"action\":\"on_support\"",
         "type": "custom",
         "valuesFormat": "csv"
       },
@@ -306,25 +302,25 @@
           {
             "selected": false,
             "text": "bapTxnCaller",
-            "value": "\\\"module_id\\\":\\\"bapTxnCaller\\\""
+            "value": "\"module_id\":\"bapTxnCaller\""
           },
           {
             "selected": false,
             "text": "bapTxnReceiver",
-            "value": "\\\"module_id\\\":\\\"bapTxnReceiver\\\""
+            "value": "\"module_id\":\"bapTxnReceiver\""
           },
           {
             "selected": false,
             "text": "bppTxnCaller",
-            "value": "\\\"module_id\\\":\\\"bppTxnCaller\\\""
+            "value": "\"module_id\":\"bppTxnCaller\""
           },
           {
             "selected": false,
             "text": "bppTxnReceiver",
-            "value": "\\\"module_id\\\":\\\"bppTxnReceiver\\\""
+            "value": "\"module_id\":\"bppTxnReceiver\""
           }
         ],
-        "query": "\\\"module_id\\\":\\\"bapTxnCaller\\\",\\\"module_id\\\":\\\"bapTxnReceiver\\\",\\\"module_id\\\":\\\"bppTxnCaller\\\",\\\"module_id\\\":\\\"bppTxnReceiver\\\"",
+        "query": "\"module_id\":\"bapTxnCaller\",\"module_id\":\"bapTxnReceiver\",\"module_id\":\"bppTxnCaller\",\"module_id\":\"bppTxnReceiver\"",
         "type": "custom",
         "valuesFormat": "csv"
       },
@@ -347,25 +343,25 @@
           {
             "selected": false,
             "text": "debug",
-            "value": "\\\"level\\\":\\\"debug\\\""
+            "value": "\"level\":\"debug\""
           },
           {
             "selected": false,
             "text": "info",
-            "value": "\\\"level\\\":\\\"info\\\""
+            "value": "\"level\":\"info\""
           },
           {
             "selected": false,
             "text": "warn",
-            "value": "\\\"level\\\":\\\"warn\\\""
+            "value": "\"level\":\"warn\""
           },
           {
             "selected": false,
             "text": "error",
-            "value": "\\\"level\\\":\\\"error\\\""
+            "value": "\"level\":\"error\""
           }
         ],
-        "query": "\\\"level\\\":\\\"debug\\\",\\\"level\\\":\\\"info\\\",\\\"level\\\":\\\"warn\\\",\\\"level\\\":\\\"error\\\"",
+        "query": "\"level\":\"debug\",\"level\":\"info\",\"level\":\"warn\",\"level\":\"error\"",
         "type": "custom",
         "valuesFormat": "csv"
       },
@@ -433,6 +429,6 @@
   "timezone": "browser",
   "title": "Adapter Logs Dashboard",
   "uid": "local-retail-adapter-logs",
-  "version": 3,
+  "version": 5,
   "weekStart": ""
 }

@@ -1,5 +1,14 @@
 auth_enabled: false
 
+distributor:
+  otlp_config:
+    default_resource_attributes_as_index_labels:
+      - service.name
+      - action
+      - level
+      - module_id
+      - subscriber_id
+
 server:
   http_listen_port: 3100
 

@@ -13,6 +13,8 @@ FRONTEND_DOMAIN="${FRONTEND_DOMAIN:-shop.remiges.tech}"
 FRONTEND_UPSTREAM="${FRONTEND_UPSTREAM:-127.0.0.1:3000}"
 BPP_FRONTEND_DOMAIN="${BPP_FRONTEND_DOMAIN:-storeadmin.remiges.tech}"
 BPP_FRONTEND_UPSTREAM="${BPP_FRONTEND_UPSTREAM:-127.0.0.1:3001}"
+NOC_DOMAIN="${NOC_DOMAIN:-ion-noc.test.remiges.tech}"
+NOC_UPSTREAM="${NOC_UPSTREAM:-127.0.0.1:3300}"
 ACCESS_LOG_FILE="${ACCESS_LOG_FILE:-/var/log/caddy/access.log}"
 GO_VERSION="${GO_VERSION:-1.25.0}"
 CADDY_EMAIL="${CADDY_EMAIL:-}"
@@ -122,6 +124,13 @@ ${BPP_FRONTEND_DOMAIN} {
 	}
 }"
 
+NOC_BLOCK="
+
+${NOC_DOMAIN} {
+	encode zstd gzip${ACCESS_LOG_BLOCK}
+	reverse_proxy ${NOC_UPSTREAM}
+}"
+
 cat > /etc/caddy/Caddyfile <<EOF
 {
 	${EMAIL_BLOCK}
@@ -145,7 +154,7 @@ ${BAPAPP_DOMAIN} {
 ${BPPAPP_DOMAIN} {
 	encode zstd gzip${ACCESS_LOG_BLOCK}
 	reverse_proxy ${BPPAPP_UPSTREAM}
-}${FRONTEND_BLOCK}${BPP_FRONTEND_BLOCK}
+}${FRONTEND_BLOCK}${BPP_FRONTEND_BLOCK}${NOC_BLOCK}
 EOF
 
 caddy fmt --overwrite /etc/caddy/Caddyfile
@@ -163,6 +172,7 @@ echo "Frontend domain: ${FRONTEND_DOMAIN} -> ${FRONTEND_UPSTREAM}"
 echo "Frontend /api/* and /health -> ${BAPAPP_UPSTREAM}"
 echo "BPP frontend domain: ${BPP_FRONTEND_DOMAIN} -> ${BPP_FRONTEND_UPSTREAM}"
 echo "BPP frontend /api/* and /health -> ${BPPAPP_UPSTREAM}"
+echo "NOC domain: ${NOC_DOMAIN} -> ${NOC_UPSTREAM}"
 echo "Access log file: ${ACCESS_LOG_FILE}"
 echo
 echo "Checks:"
@@ -175,5 +185,6 @@ echo "  curl -I https://${FRONTEND_DOMAIN}"
 echo "  curl -I https://${FRONTEND_DOMAIN}/health"
 echo "  curl -I https://${BPP_FRONTEND_DOMAIN}"
 echo "  curl -I https://${BPP_FRONTEND_DOMAIN}/health"
+echo "  curl -I https://${NOC_DOMAIN}"
 echo "  tail -f ${ACCESS_LOG_FILE}"
 echo "  journalctl -u caddy -f"
