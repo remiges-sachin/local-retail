@@ -200,7 +200,6 @@ def build_entry(resource_id: str, resource_name: str, offer_id: str, price: floa
 
     resource = {
         "id": normalized_resource_id,
-        "stockQuantity": 10,
         "descriptor": {
             "name": resource_name,
             "shortDesc": short_desc,
